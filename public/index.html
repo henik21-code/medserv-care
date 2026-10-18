@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedServ Care | Keeping Ethiopia&rsquo;s imaging equipment running</title>
+<meta name="description" content="A platform connecting Ethiopian hospitals with verified biomedical engineers, spare parts and procurement support.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B7A7A'/%3E%3Cpath d='M16 7v18M7 16h18' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B2A3C;--teal:#0B7A7A;--amber:#F2A541;--mist:#EEF5F5;--red:#C73E54;--mute:#4A5A6A;--line:#D3E2E2}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.55 'Source Sans 3',system-ui,sans-serif;color:var(--ink);background:#fff}
+h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;line-height:1.1;margin:0}
+h1{font-size:clamp(36px,6vw,64px)}h2{font-size:clamp(28px,4vw,40px);margin-bottom:12px}h3{font-size:22px}
+p{margin:0 0 12px}a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+section{padding:68px 0}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+nav{position:sticky;top:0;background:rgba(11,42,60,.96);z-index:9}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+nav b{color:#fff;font-family:'Source Serif 4',serif;font-size:20px}
+nav a{color:#DCEBEB;text-decoration:none;margin-left:20px;font-size:15px}nav a:hover{color:var(--amber)}
+.btn{display:inline-block;border:0;border-radius:8px;padding:13px 22px;font:700 16px 'Source Sans 3',sans-serif;cursor:pointer;text-decoration:none}
+.btn.a{background:var(--amber);color:var(--ink)}.btn.t{background:var(--teal);color:#fff}.btn:hover{filter:brightness(1.07)}
+.hero{background:var(--ink);color:#fff;padding:56px 0 64px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero p.lead{font-size:20px;color:#DCEBEB;max-width:520px;margin:18px 0 24px}
+.demo{background:#fff;color:var(--ink);border-radius:14px;padding:22px}
+.demo h3{font-size:19px}
+.clock{display:flex;justify-content:space-between;align-items:baseline;margin:10px 0 14px}
+.clock span{font:700 44px 'Source Serif 4',serif;color:var(--red)}.clock.ok span{color:var(--teal)}
+.steps{list-style:none;margin:0 0 16px;padding:0}
+.steps li{padding:9px 0 9px 34px;position:relative;border-bottom:1px solid var(--line);color:#7A8B99;transition:color .3s}
+.steps li:before{content:"";position:absolute;left:6px;top:14px;width:14px;height:14px;border-radius:50%;border:2px solid #B9C9CF}
+.steps li.on{color:var(--ink)}.steps li.on:before{background:var(--teal);border-color:var(--teal)}
+.steps small{display:block;color:var(--mute)}
+.note{font-size:13px;color:var(--mute)}
+.stats{background:var(--mist)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.stat b{display:block;font:700 56px 'Source Serif 4',serif;color:var(--teal);line-height:1}
+.stat p{margin-top:8px}.src{font-size:13px;color:var(--mute)}
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+label{display:block;font-weight:600;margin:0 0 14px}
+input,select,textarea{width:100%;margin-top:5px;padding:11px;border:1px solid #AFC3C8;border-radius:8px;font:inherit;color:var(--ink)}
+.out{background:var(--ink);color:#fff;border-radius:14px;padding:26px}
+.out .big{font:700 46px 'Source Serif 4',serif;color:var(--amber);line-height:1.05}
+.out hr{border:0;border-top:1px solid #345366;margin:14px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.tabs button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:9px 18px;font:600 16px 'Source Sans 3';cursor:pointer;color:var(--ink)}
+.tabs button[aria-selected=true]{background:var(--teal);border-color:var(--teal);color:#fff}
+.panel{background:var(--mist);border-radius:14px;padding:26px;max-width:760px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px}
+.feat div{border-top:3px solid var(--teal);padding-top:10px}.feat b{display:block;font-size:18px}
+.dark{background:var(--ink);color:#fff}.dark .feat div{border-top-color:var(--amber)}.dark .src{color:#9FB6C3}
+.pk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.pk>div{border:2px solid var(--line);border-radius:14px;padding:24px}
+.pk>div.hot{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pk ul{padding-left:18px;margin:12px 0 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.road{list-style:none;padding:0;margin:14px 0 0;border-left:3px solid var(--amber)}
+.road li{padding:0 0 14px 18px}.road b{display:block}
+.forms{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.card{border:2px solid var(--line);border-radius:14px;padding:24px}
+.msg{margin-top:12px;font-weight:600;color:var(--teal)}
+footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
+@media(max-width:820px){.hero .wrap,.calc,.two,.forms,.grid3,.pk{grid-template-columns:1fr}nav a{display:none}nav a.k{display:inline}section{padding:48px 0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><b>MedServ Care</b><div><a href="#how">How it works</a><a href="#cost">Cost of downtime</a><a href="#plans">Packages</a><a href="#next">Platform</a><a href="app.html">Sign in</a><a class="k" href="#join">Join the pilot</a></div></div></nav>
+
+<header class="hero"><div class="wrap">
+<div>
+<h1>When an imaging machine stops, the hospital stops.</h1>
+<p class="lead">MedServ Care connects hospitals with verified biomedical engineers, spare parts and procurement support, so a repair takes days, not months.</p>
+<a class="btn a" href="#join">Request a free equipment health check</a>
+</div>
+<div class="demo" aria-live="polite">
+<h3>Watch one repair, start to finish</h3>
+<div class="clock" id="clock"><small>Machine down for</small><span id="day">Day 0</span></div>
+<ol class="steps" id="steps">
+<li><b>Fault reported</b><small>CT scanner, hospital 300 km from Addis Ababa</small></li>
+<li><b>Nearest verified engineer matched</b><small>Biomedical engineer 40 km away accepts</small></li>
+<li><b>Diagnosis on site</b><small>Beyond his skill: senior engineer joins by live video</small></li>
+<li><b>Part found</b><small>Spare-parts finder checks local suppliers first</small></li>
+<li><b>Fixed, quality check passed</b><small>Back in service with a job report</small></li>
+</ol>
+<button class="btn t" id="play">Report a fault</button>
+<p class="note" style="margin:10px 0 0">Illustrative scenario, not a real case.</p>
+</div>
+</div></header>
+
+<section class="stats"><div class="wrap">
+<h2>The gap is documented</h2>
+<div class="grid3">
+<div class="stat"><b>25%</b><p>of imaging devices in Addis Ababa public hospitals were non-functional, for lack of skilled technicians.</p><p class="src">Shimelis &amp; Atnafu, Ethiopian Medical Journal, 2011 (cited in BMC Health Services Research, 2023)</p></div>
+<div class="stat"><b>1 in 3</b><p>medical devices were not working in the three Jimma Zone hospitals studied.</p><p class="src">BMC Health Services Research, 2016</p></div>
+<div class="stat"><b>1 of 8</b><p>Amhara specialized hospitals surveyed had spare parts for their equipment.</p><p class="src">Frontiers in Health Services, 2024</p></div>
+</div></div></section>
+
+<section id="how"><div class="wrap">
+<h2>One platform, three kinds of users</h2>
+<p>Like a ride-hailing app, but for a technical, regulated field, so every engineer is vetted and every job leaves a record.</p>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="0">Hospitals</button><button role="tab" aria-selected="false" data-t="1">Engineers</button><button role="tab" aria-selected="false" data-t="2">Suppliers and manufacturers</button>
+</div>
+<div class="panel" id="panel"></div>
+<p style="margin-top:22px"><b>Equipment we support:</b> X-ray, CT, MRI, ultrasound, fluoroscopy, mammography, PET, SPECT, dental radiography, bone densitometry, C-arm and mobile X-ray, and laboratory devices.</p>
+<div class="feat">
+<div><b>Spare-parts finder</b>Local suppliers first, then international sources, with price and availability.</div>
+<div><b>Live help</b>Staff or engineers send a photo or video and get AI guidance, with escalation to a senior engineer.</div>
+<div><b>Care Score</b>Checklists and badges that coach staff to prevent avoidable breakdowns.</div>
+<div><b>Import and regulatory support</b>Documents and advice for parts, equipment and registration.</div>
+<div><b>Procurement</b>Needs assessment and sourcing when a machine reaches end of life.</div>
+<div><b>Laboratory quality control</b>Engineers help small labs find why a QC check fails and recalibrate.</div>
+<div><b>QR equipment passport</b>Scan a machine to see its service history and checklists.</div>
+<div><b>Offline mode</b>Works without internet and syncs later.</div>
+</div>
+<p class="note" style="margin-top:14px">The AI assists; qualified engineers decide. Machine photos only, never patient data.</p>
+</div></section>
+
+<section id="cost" class="stats"><div class="wrap">
+<h2>What does one breakdown cost you?</h2>
+<p>Enter your own numbers. The defaults are examples only.</p>
+<div class="calc">
+<div>
+<label>Income lost per day when the machine is down (ETB)<input type="number" id="c1" value="20000" min="0"></label>
+<label>Days the machine is down per breakdown today<input type="number" id="c2" value="30" min="0"></label>
+<label>Breakdowns per year<input type="number" id="c3" value="3" min="0"></label>
+<label>Days down with a nearby engineer (your target)<input type="number" id="c4" value="3" min="0"></label>
+</div>
+<div class="out" aria-live="polite">
+<div>Lost each year today</div><div class="big" id="r1">0</div>
+<hr><div>Lost each year with MedServ Care</div><div class="big" id="r2" style="color:#7FD6D0">0</div>
+<hr><div>Income recovered each year</div><div class="big" id="r3">0</div>
+<p class="note" style="color:#9FB6C3;margin-top:12px">Illustrative calculator. Real savings depend on your equipment and contract.</p>
+</div></div></div></section>
+
+<section id="plans"><div class="wrap">
+<h2>Annual care packages</h2>
+<p>Or pay per repair if you are not ready to commit.</p>
+<div class="pk">
+<div><h3>Basic</h3><ul><li>Preventive maintenance</li><li>Calibration and QC</li><li>Daily care app</li></ul></div>
+<div class="hot"><h3>Standard</h3><ul><li>Everything in Basic</li><li>Priority repair, 48-hour target</li><li>QC reports</li><li>Live video support</li></ul></div>
+<div><h3>Premium</h3><ul><li>Everything in Standard</li><li>AI assistant and Care Score</li><li>Staff training</li><li>Equipment consultation</li></ul></div>
+</div></div></section>
+
+<section id="next" class="dark"><div class="wrap">
+<h2>What you can do on the platform</h2>
+<p>Create an account, send a request and follow it to the end.</p>
+<div class="feat">
+<div><b>User accounts</b>Secure sign-in for hospitals, engineers and suppliers.</div>
+<div><b>Engineer verification</b>Credentials are checked before an engineer can take jobs.</div>
+<div><b>Job matching</b>Requests go to the nearest verified engineer for your equipment.</div>
+<div><b>Parts directory</b>Search suppliers and spare parts with price and availability.</div>
+<div><b>Payments</b>Invoices after each job, paid online or by transfer and confirmed.</div>
+</div><p style="margin-top:22px"><a class="btn a" href="app.html">Open the platform</a></p></div></section>
+
+<section id="join"><div class="wrap">
+<h2>Join the pilot</h2>
+<p>Founded by a radiologic technologist and biomedical engineer who has watched machines sit broken for months.</p>
+<p><a class="btn t" href="app.html">Register as a hospital or diagnostic center</a> <a class="btn a" href="app.html">Register as an engineer or supplier</a></p>
+<p class="note">Engineers are verified before they can receive jobs.</p></div></section>
+
+<footer><div class="wrap">
+<p>MedServ Care, Ethiopia. Contact: [phone] | [email] | [Telegram]</p>
+
+</div></footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+// repair demo
+const li=$$('#steps li'),days=[0,0,1,2,2];let timer;
+$('#play').onclick=()=>{clearInterval(timer);li.forEach(x=>x.classList.remove('on'));$('#clock').classList.remove('ok');$('#day').textContent='Day 0';$('#play').textContent='Replay';
+let i=0;timer=setInterval(()=>{if(i>=li.length){clearInterval(timer);$('#clock').classList.add('ok');$('#day').textContent='Back online, Day '+days[4];return}
+li[i].classList.add('on');$('#day').textContent='Day '+days[i];i++},1100)};
+// calculator
+const f=n=>Math.round(n).toLocaleString('en-US')+' ETB';
+function calc(){const a=+$('#c1').value||0,d=+$('#c2').value||0,b=+$('#c3').value||0,t=+$('#c4').value||0;
+$('#r1').textContent=f(a*d*b);$('#r2').textContent=f(a*t*b);$('#r3').textContent=f(a*Math.max(d-t,0)*b)}
+$$('.calc input').forEach(x=>x.oninput=calc);calc();
+// tabs
+const T=[['Request a repair in minutes','Describe the fault and add photos or video. The nearest verified engineer accepts the job, a senior engineer can join live if needed, and you track progress, approve the job report and pay by invoice. If a part or a new machine is needed, the platform finds it and handles the paperwork.'],
+['Work near home, with backup','Register, upload your credentials and get verified. Take jobs close to you, call a senior engineer on live video when a fault is beyond your skill, and build a rated profile. Specialized work on radiation equipment (X-ray, CT, fluoroscopy, PET, SPECT and others) is limited to qualified engineers.'],
+['Reach Ethiopian hospitals','List spare parts, answer sourcing requests from hospitals, and enter the Ethiopian market with a local service partner that supports installation, maintenance, import documents and training.']];
+function tab(n){$('#panel').innerHTML='<h3>'+T[n][0]+'</h3><p style="margin-top:10px">'+T[n][1]+'</p>';$$('.tabs button').forEach((x,i)=>x.setAttribute('aria-selected',i==n))}
+$$('.tabs button').forEach(x=>x.onclick=()=>tab(+x.dataset.t));tab(0);
+// demo forms
+$$('form').forEach(fm=>fm.onsubmit=e=>{e.preventDefault();fm.querySelector('.msg').textContent=fm.dataset.m});
+</script>
+</body>
+</html>

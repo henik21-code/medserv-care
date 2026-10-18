@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MedServ Care platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B2A3C;--teal:#0B7A7A;--amber:#F2A541;--mist:#EEF5F5;--red:#C73E54;--mute:#4A5A6A;--line:#D3E2E2}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 'Source Sans 3',system-ui,sans-serif;color:var(--ink);background:var(--mist)}
+h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;margin:0 0 10px;line-height:1.15}
+nav{background:var(--ink);color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}nav a{color:#fff;text-decoration:none;font:700 20px 'Source Serif 4',serif}
+main{max-width:980px;margin:0 auto;padding:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+label{display:block;font-weight:600;margin:0 0 12px}input,select,textarea{width:100%;margin-top:4px;padding:10px;border:1px solid #AFC3C8;border-radius:8px;font:inherit}
+.btn{border:0;border-radius:8px;padding:10px 16px;font:700 15px 'Source Sans 3';cursor:pointer;background:var(--teal);color:#fff;margin:4px 6px 0 0}.btn.a{background:var(--amber);color:var(--ink)}.btn.g{background:#fff;color:var(--ink);border:2px solid var(--line)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.tag{display:inline-block;background:var(--mist);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:600}.tag.ok{background:#D5F0E3}.tag.bad{background:#F8DDE2}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}.err{color:var(--red);font-weight:600;margin-top:8px}.mute{color:var(--mute);font-size:14px}
+.chk label{display:inline-block;font-weight:400;margin:0 12px 6px 0}.chk input{width:auto;margin-right:4px}
+@media(max-width:700px){.row{grid-template-columns:1fr}}
+</style></head><body>
+<nav><a href="index.html">MedServ Care</a><span id="who"></span></nav><main id="app">Loading...</main>
+<script>
+let me=null,meta={};const app=document.getElementById('app');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api=async(p,m='GET',b)=>{const r=await fetch('/api'+p,{method:m,headers:{'Content-Type':'application/json',Authorization:'Bearer '+(localStorage.t||'')},body:b?JSON.stringify(b):undefined});const j=await r.json();if(!r.ok)throw new Error(j.error||'Something went wrong');return j};
+const opts=a=>a.map(x=>`<option>${esc(x)}</option>`).join('');
+const ST={open:'Waiting for an engineer',assigned:'Engineer assigned',in_progress:'In progress',escalated:'Senior engineer helping',completed:'Completed'};
+async function boot(){try{meta=await api('/meta')}catch{app.innerHTML='<div class="card">The server is not running. Start it with: node server.js</div>';return}
+ const t=new URLSearchParams(location.search).get('tx_ref');if(t)await api('/payments/verify?tx_ref='+t).catch(()=>{});
+ if(localStorage.t){try{me=(await api('/me')).user}catch{localStorage.removeItem('t')}}me?dash():auth()}
+function auth(){document.getElementById('who').innerHTML='';
+ app.innerHTML=`<div class="row"><form class="card" id="lf"><h2>Sign in</h2><label>Email<input name="email" type="email" required></label><label>Password<input name="password" type="password" required></label><button class="btn">Sign in</button><div class="err" id="le"></div></form>
+ <form class="card" id="rf"><h2>Register</h2><label>I am a<select name="role" id="rr"><option value="hospital">Hospital or diagnostic center</option><option value="engineer">Biomedical engineer</option><option value="supplier">Parts supplier or manufacturer</option></select></label>
+ <label>Name (person or facility)<input name="name" required></label><label>Email<input name="email" type="email" required></label><label>Phone<input name="phone"></label>
+ <label>City<select name="city">${opts(meta.cities)}</select></label><label>Password (8+ characters)<input name="password" type="password" minlength="8" required></label>
+ <div id="eng" style="display:none"><label>License or degree number<input name="license"></label><div class="chk"><b>Equipment you can service</b><br>${meta.modalities.map(m=>`<label><input type="checkbox" name="sp" value="${esc(m)}">${esc(m)}</label>`).join('')}</div><p class="mute">Engineers are verified by an admin before they can receive jobs.</p></div>
+ <button class="btn">Create account</button><div class="err" id="re"></div></form></div>`;
+ rr.onchange=()=>eng.style.display=rr.value==='engineer'?'block':'none';
+ lf.onsubmit=async e=>{e.preventDefault();try{const f=Object.fromEntries(new FormData(lf));const r=await api('/login','POST',f);localStorage.t=r.token;me=r.user;dash()}catch(x){le.textContent=x.message}};
+ rf.onsubmit=async e=>{e.preventDefault();try{const f=Object.fromEntries(new FormData(rf));f.specialties=[...rf.querySelectorAll('[name=sp]:checked')].map(c=>c.value);const r=await api('/register','POST',f);localStorage.t=r.token;me=r.user;dash()}catch(x){re.textContent=x.message}}}
+function out(){localStorage.removeItem('t');me=null;auth()}
+async function dash(){document.getElementById('who').innerHTML=`${esc(me.name)} (${me.role}) <button class="btn a" onclick="out()">Sign out</button>`;
+ let h='';
+ if(me.role==='engineer')h+=`<div class="card">${me.verified?'<span class="tag ok">Verified</span> You can receive jobs near '+esc(me.city)+'.':'<span class="tag bad">Waiting for verification</span> An admin will check your license and approve you.'}${me.senior?' <span class="tag ok">Senior engineer</span>':''}</div>`;
+ if(me.role==='hospital')h+=`<form class="card" id="jf"><h2>Request a repair</h2><div class="row"><label>Equipment<select name="modality">${opts(meta.modalities)}</select></label><label>Urgency<select name="urgency"><option value="normal">Normal</option><option value="urgent">Urgent</option></select></label></div><label>What is the problem?<textarea name="description" rows="3" required></textarea></label><button class="btn">Send request</button><div class="err" id="je"></div></form>`;
+ h+=`<div id="jobs"></div>`;
+ if(me.role==='admin')h+=`<div id="adm"></div>`;
+ h+=`<div class="card"><h2>Spare-parts directory</h2><div class="row"><label>Search<input id="pq" placeholder="part, brand or note"></label><label>Equipment<select id="pm"><option value="">All</option>${opts(meta.modalities)}</select></label></div><button class="btn" onclick="parts()">Search</button><div id="pl"></div></div>`;
+ if(['supplier','engineer','admin'].includes(me.role))h+=`<form class="card" id="pf"><h3>Add a part</h3><div class="row"><label>Part name<input name="name" required></label><label>Brand<input name="brand"></label><label>Equipment<select name="modality">${opts(meta.modalities)}</select></label><label>Price (ETB)<input name="price" type="number"></label></div><label>In stock?<select name="stock"><option value="yes">Yes</option><option value="no">No, order on request</option></select></label><label>Notes<input name="notes"></label><button class="btn">Add part</button></form>`;
+ app.innerHTML=h;
+ if(window.jf)jf.onsubmit=async e=>{e.preventDefault();try{await api('/jobs','POST',Object.fromEntries(new FormData(jf)));jf.reset();jobs()}catch(x){je.textContent=x.message}};
+ if(window.pf)pf.onsubmit=async e=>{e.preventDefault();try{await api('/parts','POST',Object.fromEntries(new FormData(pf)));pf.reset();parts()}catch(x){alert(x.message)}};
+ jobs();parts();if(me.role==='admin')admin()}
+async function jobs(){const j=(await api('/jobs')).jobs;
+ jobs.innerHTML;document.getElementById('jobs').innerHTML=`<div class="card"><h2>${me.role==='hospital'?'Your requests':'Jobs'}</h2>${j.length?j.map(card).join(''):'<p class="mute">No jobs yet.</p>'}</div>`}
+function card(j){const b=[],p=j.payment,eng=j.engineer&&j.engineer.id===me.id,sup=j.supervisor&&j.supervisor.id===me.id;
+ if(eng&&j.status==='assigned')b.push(['start','Start work'],['decline','Decline']);
+ if(eng&&['in_progress','escalated'].includes(j.status))b.push(['escalate','Ask a senior engineer'],['note','Add note'],['complete','Complete job']);
+ if(sup)b.push(['note','Give advice']);if(me.role==='admin'&&j.status==='open')b.push(['rematch','Find an engineer']);
+ let pay='';if(p){pay=`<p>Invoice: <b>${p.amount} ETB</b> <span class="tag ${p.status==='paid'?'ok':''}">${p.status.replace('_',' ')}</span></p>`;
+  if(me.id===p.hospitalId&&p.status==='unpaid')pay+=`<button class="btn a" onclick="pay('${p.id}')">Pay now</button>`;
+  if(me.role==='admin'&&p.status==='awaiting_confirmation')pay+=`<button class="btn a" onclick="confirmPay('${p.id}')">Confirm payment (ref ${esc(p.ref)})</button>`}
+ return `<div class="card" style="background:var(--mist)"><b>${esc(j.modality)}</b> <span class="tag">${ST[j.status]}</span>${j.urgency==='urgent'?' <span class="tag bad">Urgent</span>':''}
+ <p>${esc(j.description)}</p><p class="mute">Hospital: ${esc(j.hospital?.name)} (${esc(j.hospital?.city)}, ${esc(j.hospital?.phone)})${j.engineer?` | Engineer: ${esc(j.engineer.name)} ${esc(j.engineer.phone)}${j.distanceKm!=null?', about '+j.distanceKm+' km away':''}`:''}${j.supervisor?` | Senior: ${esc(j.supervisor.name)}`:''}</p>
+ ${j.notes.map(n=>`<p class="mute">${esc(n.by)}: ${esc(n.text)}</p>`).join('')}${j.report?`<p><b>Report:</b> ${esc(j.report)}</p>`:''}${pay}
+ ${b.map(x=>`<button class="btn g" onclick="act('${j.id}','${x[0]}')">${x[1]}</button>`).join('')}</div>`}
+async function act(id,a){const d={};try{
+ if(a==='escalate'){d.text=prompt('What do you need help with?');if(!d.text)return}
+ if(a==='note'){d.text=prompt('Your note');if(!d.text)return}
+ if(a==='complete'){d.report=prompt('Job report: what was wrong and what you did');d.amount=prompt('Labour charge in ETB');if(!d.report||!d.amount)return}
+ await api('/jobs/'+id+'/'+a,'POST',d);jobs();if(me.role==='admin')admin()}catch(x){alert(x.message)}}
+async function pay(id){try{const d={};if(!meta.chapa){d.ref=prompt('Bank transfer or mobile money reference');if(!d.ref)return}
+ const r=await api('/payments/'+id+'/pay','POST',d);if(r.checkoutUrl)location.href=r.checkoutUrl;else jobs()}catch(x){alert(x.message)}}
+async function confirmPay(id){await api('/payments/'+id+'/confirm','POST',{});jobs()}
+async function parts(){const r=await api('/parts?q='+encodeURIComponent(pq.value)+'&modality='+encodeURIComponent(pm.value));
+ pl.innerHTML=r.parts.length?r.parts.map(t=>`<p><b>${esc(t.name)}</b> ${esc(t.brand)} | ${esc(t.modality)} | ${t.price?t.price+' ETB':'price on request'} | ${t.stock?'In stock':'Order on request'}<br><span class="mute">${esc(t.supplier?.name)}, ${esc(t.supplier?.city)}, ${esc(t.supplier?.phone)} ${esc(t.notes)}</span>${me.id===t.ownerId||me.role==='admin'?` <button class="btn g" onclick="delPart('${t.id}')">Remove</button>`:''}</p>`).join(''):'<p class="mute">No parts found.</p>'}
+async function delPart(id){await api('/parts/'+id+'/delete','POST',{});parts()}
+async function admin(){const u=(await api('/admin/users')).users;
+ adm.innerHTML=`<div class="card"><h2>Users</h2>${u.map(x=>`<p><b>${esc(x.name)}</b> (${x.role}, ${esc(x.city)}) ${esc(x.email)}${x.role==='engineer'?` | License: ${esc(x.license)} | ${esc(x.specialties.join(', '))}`:''} <span class="tag ${x.verified?'ok':'bad'}">${x.verified?'verified':'not verified'}</span>
+ ${x.role==='engineer'?`<button class="btn g" onclick="adm2('${x.id}',{verified:${!x.verified}})">${x.verified?'Unverify':'Verify'}</button><button class="btn g" onclick="adm2('${x.id}',{senior:${!x.senior}})">${x.senior?'Remove senior':'Make senior'}</button>`:''}</p>`).join('')||'<p class="mute">No users yet.</p>'}</div>`}
+async function adm2(id,b){await api('/admin/users/'+id,'POST',b);admin();jobs()}
+boot();
+</script></body></html>
