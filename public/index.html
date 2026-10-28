@@ -53,7 +53,7 @@ input,select,textarea{width:100%;margin-top:5px;padding:11px;border:1px solid #A
 .panel{background:var(--mist);border-radius:14px;padding:26px;max-width:760px}
 .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px}
 .feat div{border-top:3px solid var(--teal);padding-top:10px}.feat b{display:block;font-size:18px}
-.dark{background:var(--ink);color:#fff}.dark .feat div{border-top-color:var(--amber)}.dark .src{color:#9FB6C3}
+.fit{border-collapse:collapse;width:100%;background:#fff}.fit th,.fit td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left}.fit th{background:var(--ink);color:#fff}.fit .us td{background:#FFF1DA;font-weight:600}.dark{background:var(--ink);color:#fff}.dark .feat div{border-top-color:var(--amber)}.dark .src{color:#9FB6C3}
 .pk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
 .pk>div{border:2px solid var(--line);border-radius:14px;padding:24px}
 .pk>div.hot{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -70,7 +70,7 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 </style>
 </head>
 <body>
-<nav><div class="wrap"><b>MedServ Care</b><div><a href="#how">How it works</a><a href="#cost">Cost of downtime</a><a href="#plans">Packages</a><a href="#next">Platform</a><a href="app.html">Sign in</a><a class="k" href="#join">Join the pilot</a></div></div></nav>
+<nav><div class="wrap"><b>MedServ Care</b><div><a href="#how">How it works</a><a href="#team">Our team</a><a href="#cost">Cost of downtime</a><a href="#plans">Packages</a><a href="#next">Platform</a><a href="app.html">Sign in</a><a class="k" href="#join">Join the pilot</a></div></div></nav>
 
 <header class="hero"><div class="wrap">
 <div>
@@ -102,26 +102,42 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 </div></div></section>
 
 <section id="how"><div class="wrap">
-<h2>One platform, three kinds of users</h2>
-<p>Like a ride-hailing app, but for a technical, regulated field, so every engineer is vetted and every job leaves a record.</p>
+<h2>One company, one platform</h2>
+<p>We sign service agreements with hospitals and diagnostic centers. When you call, our team responds, and every job leaves a record.</p>
 <div class="tabs" role="tablist">
-<button role="tab" aria-selected="true" data-t="0">Hospitals</button><button role="tab" aria-selected="false" data-t="1">Engineers</button><button role="tab" aria-selected="false" data-t="2">Suppliers and manufacturers</button>
+<button role="tab" aria-selected="true" data-t="0">Hospitals</button><button role="tab" aria-selected="false" data-t="1">Our engineers</button><button role="tab" aria-selected="false" data-t="2">Suppliers and manufacturers</button>
 </div>
 <div class="panel" id="panel"></div>
-<p style="margin-top:22px"><b>Equipment we support:</b> X-ray, CT, MRI, ultrasound, fluoroscopy, mammography, PET, SPECT, dental radiography, bone densitometry, C-arm and mobile X-ray, and laboratory devices.</p>
+<p style="margin-top:22px"><b>Equipment we support:</b> X-ray, CT, MRI, ultrasound, fluoroscopy, mammography, PET, SPECT, dental radiography, bone densitometry, and C-arm and mobile X-ray.</p>
 <div class="feat">
 <div><b>Spare-parts finder</b>Local suppliers first, then international sources, with price and availability.</div>
 <div><b>Live help</b>Staff or engineers send a photo or video and get AI guidance, with escalation to a senior engineer.</div>
 <div><b>Care Score</b>Checklists and badges that coach staff to prevent avoidable breakdowns.</div>
 <div><b>Import and regulatory support</b>Documents and advice for parts, equipment and registration.</div>
-<div><b>Procurement</b>Needs assessment and sourcing when a machine reaches end of life.</div>
-<div><b>Laboratory quality control</b>Engineers help small labs find why a QC check fails and recalibrate.</div>
+<div><b>Equipment selection advice</b>Independent advice on which brand, model and spare parts fit your needs and budget.</div>
+<div><b>Quality control and calibration</b>Image-quality checks and calibration to keep results reliable and safe.</div>
 <div><b>QR equipment passport</b>Scan a machine to see its service history and checklists.</div>
 <div><b>Offline mode</b>Works without internet and syncs later.</div>
 </div>
 <p class="note" style="margin-top:14px">The AI assists; qualified engineers decide. Machine photos only, never patient data.</p>
 </div></section>
 
+<section id="team" class="stats"><div class="wrap">
+<h2>One company, a team of engineers</h2>
+<p>MedServ Care delivers the service itself with a team of biomedical engineers. The platform is the tool that runs it.</p>
+<div class="grid3">
+<div class="card" style="background:#fff"><h3>Certified engineers</h3><p>Employed by MedServ Care. They handle repairs, calibration and quality control.</p></div>
+<div class="card" style="background:#fff"><h3>Senior engineers</h3><p>Support the team remotely on complex faults and work with manufacturers and distributors.</p></div>
+<div class="card" style="background:#fff"><h3>Field associates</h3><p>Vetted part-time technicians near the hospital for first-line checks in regional areas, working under our contracts and checklists. They never open radiation or high-voltage parts.</p></div>
+</div></div></section>
+<section id="fit"><div class="wrap"><h2>Where MedServ Care fits</h2>
+<div style="overflow-x:auto"><table class="fit"><tr><th>Provider</th><th>Strength</th><th>Limit</th></tr>
+<tr><td>Manufacturer service teams</td><td>Brand expertise</td><td>One brand, premium cost</td></tr>
+<tr><td>Distributor service arms</td><td>Installed base</td><td>Focused on the products they sell</td></tr>
+<tr><td>Foreign technicians</td><td>Deep expertise</td><td>Slow, costly, not local</td></tr>
+<tr><td>Individual freelancers</td><td>Low price</td><td>One person, no backup or records</td></tr>
+<tr class="us"><td>MedServ Care</td><td>Multi-brand, local team, contracts, job records</td><td>Starts brand-neutral, grows into manufacturer partnerships</td></tr>
+</table></div></div></section>
 <section id="cost" class="stats"><div class="wrap">
 <h2>What does one breakdown cost you?</h2>
 <p>Enter your own numbers. The defaults are examples only.</p>
@@ -145,7 +161,7 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 <div class="pk">
 <div><h3>Basic</h3><ul><li>Preventive maintenance</li><li>Calibration and QC</li><li>Daily care app</li></ul></div>
 <div class="hot"><h3>Standard</h3><ul><li>Everything in Basic</li><li>Priority repair, 48-hour target</li><li>QC reports</li><li>Live video support</li></ul></div>
-<div><h3>Premium</h3><ul><li>Everything in Standard</li><li>AI assistant and Care Score</li><li>Staff training</li><li>Equipment consultation</li></ul></div>
+<div><h3>Premium</h3><ul><li>Everything in Standard</li><li>AI assistant and Care Score</li><li>Staff training</li><li>Equipment selection advice</li></ul></div>
 </div></div></section>
 
 <section id="next" class="dark"><div class="wrap">
@@ -162,7 +178,7 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 <section id="join"><div class="wrap">
 <h2>Join the pilot</h2>
 <p>Founded by a radiologic technologist and biomedical engineer who has watched machines sit broken for months.</p>
-<p><a class="btn t" href="app.html">Register as a hospital or diagnostic center</a> <a class="btn a" href="app.html">Register as an engineer or supplier</a></p>
+<p><a class="btn t" href="app.html">Register as a hospital or diagnostic center</a> <a class="btn a" href="app.html">Join our engineering team or supply network</a></p>
 <p class="note">Engineers are verified before they can receive jobs.</p></div></section>
 
 <footer><div class="wrap">
@@ -183,8 +199,8 @@ function calc(){const a=+$('#c1').value||0,d=+$('#c2').value||0,b=+$('#c3').valu
 $('#r1').textContent=f(a*d*b);$('#r2').textContent=f(a*t*b);$('#r3').textContent=f(a*Math.max(d-t,0)*b)}
 $$('.calc input').forEach(x=>x.oninput=calc);calc();
 // tabs
-const T=[['Request a repair in minutes','Describe the fault and add photos or video. The nearest verified engineer accepts the job, a senior engineer can join live if needed, and you track progress, approve the job report and pay by invoice. If a part or a new machine is needed, the platform finds it and handles the paperwork.'],
-['Work near home, with backup','Register, upload your credentials and get verified. Take jobs close to you, call a senior engineer on live video when a fault is beyond your skill, and build a rated profile. Specialized work on radiation equipment (X-ray, CT, fluoroscopy, PET, SPECT and others) is limited to qualified engineers.'],
+const T=[['Request a repair in minutes','Describe the fault and add photos or video. The nearest verified engineer accepts the job, a senior engineer can join live if needed, and you track progress, approve the job report and pay by invoice. If a part is needed, the platform finds it, and for a new machine we give independent advice.'],
+['Join our engineering team','Apply, upload your credentials and get verified. Certified engineers handle repairs, calibration and quality control. Field associates do first-line checks near the hospital under our checklists and remote guidance. Everyone has senior-engineer backup, and work on radiation equipment (X-ray, CT, fluoroscopy, PET, SPECT and others) is limited to qualified engineers.'],
 ['Reach Ethiopian hospitals','List spare parts, answer sourcing requests from hospitals, and enter the Ethiopian market with a local service partner that supports installation, maintenance, import documents and training.']];
 function tab(n){$('#panel').innerHTML='<h3>'+T[n][0]+'</h3><p style="margin-top:10px">'+T[n][1]+'</p>';$$('.tabs button').forEach((x,i)=>x.setAttribute('aria-selected',i==n))}
 $$('.tabs button').forEach(x=>x.onclick=()=>tab(+x.dataset.t));tab(0);

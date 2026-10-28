@@ -3,7 +3,7 @@ const http=require('http'),fs=require('fs'),path=require('path'),crypto=require(
 const PORT=process.env.PORT||3000,DBF=path.join(__dirname,'data','db.json'),PUB=path.join(__dirname,'public');
 const FEE=+process.env.PLATFORM_FEE||0.1,CHAPA=process.env.CHAPA_SECRET_KEY,BASE=process.env.BASE_URL||`http://localhost:${PORT}`;
 const CITIES={'Addis Ababa':[9.03,38.74],'Adama':[8.54,39.27],'Bahir Dar':[11.59,37.39],'Gondar':[12.6,37.47],'Hawassa':[7.06,38.48],'Mekelle':[13.5,39.47],'Dire Dawa':[9.6,41.86],'Jimma':[7.67,36.83],'Dessie':[11.13,39.63],'Jijiga':[9.35,42.8],'Arba Minch':[6.03,37.55],'Harar':[9.31,42.12],'Debre Markos':[10.33,37.73],'Nekemte':[9.09,36.55]};
-const MODS=['X-ray','CT','MRI','Ultrasound','Fluoroscopy','Mammography','PET','SPECT','Dental radiography','Bone densitometry (DEXA)','C-arm or mobile X-ray','Laboratory device','Other'];
+const MODS=['X-ray','CT','MRI','Ultrasound','Fluoroscopy','Mammography','PET','SPECT','Dental radiography','Bone densitometry (DEXA)','C-arm or mobile X-ray'];
 let db={users:[],jobs:[],parts:[],payments:[],sessions:{}};
 fs.mkdirSync(path.dirname(DBF),{recursive:true});
 if(fs.existsSync(DBF))db=JSON.parse(fs.readFileSync(DBF));
@@ -13,7 +13,7 @@ const hash=(p,s=crypto.randomBytes(16).toString('hex'))=>s+':'+crypto.scryptSync
 const check=(p,h)=>{const a=Buffer.from(hash(p,h.split(':')[0])),b=Buffer.from(h);return a.length===b.length&&crypto.timingSafeEqual(a,b)};
 const km=(a,b)=>{const R=6371,t=x=>x*Math.PI/180,dl=t(b[0]-a[0]),dn=t(b[1]-a[1]);const h=Math.sin(dl/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
 const U=i=>db.users.find(u=>u.id===i);
-const pub=u=>u&&({id:u.id,role:u.role,name:u.name,email:u.email,phone:u.phone,city:u.city,specialties:u.specialties,license:u.license,verified:u.verified,senior:u.senior});
+const pub=u=>u&&({id:u.id,role:u.role,name:u.name,email:u.email,phone:u.phone,city:u.city,specialties:u.specialties,license:u.license,verified:u.verified,senior:u.senior,tier:u.tier});
 if(!db.users.some(u=>u.role==='admin')){const pw=process.env.ADMIN_PASSWORD||crypto.randomBytes(5).toString('hex');
  db.users.push({id:id(),role:'admin',name:'Admin',email:'admin@medserv.local',password:hash(pw),city:'Addis Ababa',verified:true});save();
  console.log(`\nFirst run. Admin login: admin@medserv.local  password: ${pw}\n`)}
@@ -21,8 +21,8 @@ if(!db.users.some(u=>u.role==='admin')){const pw=process.env.ADMIN_PASSWORD||cry
 if(process.env.DEMO==='1'&&!db.users.some(u=>u.role!=='admin')){
  const mk=(role,name,email,city,x={})=>{const u={id:id(),role,name,email,phone:'+251 900 000 000',password:hash('demo1234'),city,specialties:[],license:'',verified:true,senior:false,...x};db.users.push(u);return u};
  mk('hospital','Demo Hospital','hospital@demo.com','Bahir Dar');
- mk('engineer','Demo Engineer','engineer@demo.com','Gondar',{specialties:['CT','X-ray','Ultrasound'],license:'DEMO-001'});
- mk('engineer','Demo Senior Engineer','senior@demo.com','Addis Ababa',{specialties:['CT','MRI','X-ray'],license:'DEMO-002',senior:true});
+ mk('engineer','Demo Engineer','engineer@demo.com','Gondar',{specialties:['CT','X-ray','Ultrasound'],license:'DEMO-001',tier:'certified'});
+ mk('engineer','Demo Senior Engineer','senior@demo.com','Addis Ababa',{specialties:['CT','MRI','X-ray'],license:'DEMO-002',senior:true,tier:'certified'});
  const sp=mk('supplier','Demo Parts Supplier','supplier@demo.com','Addis Ababa');
  db.parts.push({id:id(),ownerId:sp.id,name:'X-ray tube',brand:'Generic',modality:'X-ray',price:150000,stock:true,notes:'Demo listing'});
  save();console.log('Demo accounts created (password demo1234)')}
@@ -57,7 +57,7 @@ http.createServer(async(q,r)=>{try{
   if(db.users.some(u=>u.email===email))return fail(400,'That email is already registered');
   const sp=(b.specialties||[]).filter(s=>MODS.includes(s));
   if(role==='engineer'&&(!b.license||!sp.length))return fail(400,'Engineers need a license or degree number and at least one specialty');
-  const u={id:id(),role,name:String(b.name).slice(0,100),email,phone:String(b.phone||'').slice(0,30),password:hash(b.password),city:b.city,specialties:role==='engineer'?sp:[],license:String(b.license||'').slice(0,60),verified:role!=='engineer',senior:false};
+  const u={id:id(),role,name:String(b.name).slice(0,100),email,phone:String(b.phone||'').slice(0,30),password:hash(b.password),city:b.city,specialties:role==='engineer'?sp:[],license:String(b.license||'').slice(0,60),verified:role!=='engineer',senior:false,tier:'associate'};
   db.users.push(u);return session(u)}
  if(m==='POST'&&p==='/api/login'){const u=db.users.find(u=>u.email===String(b.email||'').toLowerCase().trim());
   if(!u||!check(String(b.password||''),u.password))return fail(401,'Wrong email or password');return session(u)}
@@ -101,7 +101,7 @@ http.createServer(async(q,r)=>{try{
   if(!t||(t.ownerId!==me.id&&me.role!=='admin'))return fail(403,'Not allowed');db.parts=db.parts.filter(y=>y!==t);save();return ok({})}
  if(m==='GET'&&p==='/api/admin/users'){if(!need('admin'))return;return ok({users:db.users.filter(u=>u.role!=='admin').map(pub)})}
  if(m==='POST'&&(x=p.match(/^\/api\/admin\/users\/(\w+)$/))){if(!need('admin'))return;const u=U(x[1]);if(!u)return fail(404,'User not found');
-  if('verified' in b)u.verified=!!b.verified;if('senior' in b)u.senior=!!b.senior;
+  if('verified' in b)u.verified=!!b.verified;if('senior' in b)u.senior=!!b.senior;if(['associate','certified'].includes(b.tier))u.tier=b.tier;
   db.jobs.filter(j=>j.status==='open').forEach(match);save();return ok({user:pub(u)})}
  fail(404,'Not found')}catch(e){console.error(e);send(r,500,{error:'Server error'})}
 }).listen(PORT,()=>console.log('MedServ Care running at http://localhost:'+PORT));
