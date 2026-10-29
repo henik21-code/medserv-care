@@ -51,7 +51,7 @@ async function dash(){document.getElementById('who').innerHTML=`${esc(me.name)} 
 async function jobs(){const j=(await api('/jobs')).jobs;
  jobs.innerHTML;document.getElementById('jobs').innerHTML=`<div class="card"><h2>${me.role==='hospital'?'Your requests':'Jobs'}</h2>${j.length?j.map(card).join(''):'<p class="mute">No jobs yet.</p>'}</div>`}
 function card(j){const b=[],p=j.payment,eng=j.engineer&&j.engineer.id===me.id,sup=j.supervisor&&j.supervisor.id===me.id;
- if(eng&&j.status==='assigned')b.push(['start','Start work'],['decline','Decline']);
+ if(eng&&j.status==='assigned')b.push(['start','Start work'],['decline',"Can't attend"]);
  if(eng&&['in_progress','escalated'].includes(j.status))b.push(['escalate','Ask a senior engineer'],['note','Add note'],['complete','Complete job']);
  if(sup)b.push(['note','Give advice']);if(me.role==='admin'&&j.status==='open')b.push(['rematch','Find an engineer']);
  let pay='';if(p){pay=`<p>Invoice: <b>${p.amount} ETB</b> <span class="tag ${p.status==='paid'?'ok':''}">${p.status.replace('_',' ')}</span></p>`;

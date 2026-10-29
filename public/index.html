@@ -83,7 +83,7 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 <div class="clock" id="clock"><small>Machine down for</small><span id="day">Day 0</span></div>
 <ol class="steps" id="steps">
 <li><b>Fault reported</b><small>CT scanner, hospital 300 km from Addis Ababa</small></li>
-<li><b>Nearest verified engineer matched</b><small>Biomedical engineer 40 km away accepts</small></li>
+<li><b>Nearest engineer assigned</b><small>We assign an engineer 40 km away who can arrive fastest</small></li>
 <li><b>Diagnosis on site</b><small>Beyond his skill: senior engineer joins by live video</small></li>
 <li><b>Part found</b><small>Spare-parts finder checks local suppliers first</small></li>
 <li><b>Fixed, quality check passed</b><small>Back in service with a job report</small></li>
@@ -128,7 +128,7 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 <div class="grid3">
 <div class="card" style="background:#fff"><h3>Certified engineers</h3><p>Employed by MedServ Care. They handle repairs, calibration and quality control.</p></div>
 <div class="card" style="background:#fff"><h3>Senior engineers</h3><p>Support the team remotely on complex faults and work with manufacturers and distributors.</p></div>
-<div class="card" style="background:#fff"><h3>Field associates</h3><p>Vetted part-time technicians near the hospital for first-line checks in regional areas, working under our contracts and checklists. They never open radiation or high-voltage parts.</p></div>
+<div class="card" style="background:#fff"><h3>Field associates</h3><p>Vetted part-time biomedical engineers near the hospital for first-line checks in regional areas, working under our contracts and checklists.</p></div>
 </div></div></section>
 <section id="fit"><div class="wrap"><h2>Where MedServ Care fits</h2>
 <div style="overflow-x:auto"><table class="fit"><tr><th>Provider</th><th>Strength</th><th>Limit</th></tr>
@@ -170,7 +170,7 @@ footer{background:#071C28;color:#B8CBD5;padding:34px 0;font-size:14px}
 <div class="feat">
 <div><b>User accounts</b>Secure sign-in for hospitals, engineers and suppliers.</div>
 <div><b>Engineer verification</b>Credentials are checked before an engineer can take jobs.</div>
-<div><b>Job matching</b>Requests go to the nearest verified engineer for your equipment.</div>
+<div><b>Job matching</b>We assign the nearest verified engineer for your equipment.</div>
 <div><b>Parts directory</b>Search suppliers and spare parts with price and availability.</div>
 <div><b>Payments</b>Invoices after each job, paid online or by transfer and confirmed.</div>
 </div><p style="margin-top:22px"><a class="btn a" href="app.html">Open the platform</a></p></div></section>
@@ -199,8 +199,8 @@ function calc(){const a=+$('#c1').value||0,d=+$('#c2').value||0,b=+$('#c3').valu
 $('#r1').textContent=f(a*d*b);$('#r2').textContent=f(a*t*b);$('#r3').textContent=f(a*Math.max(d-t,0)*b)}
 $$('.calc input').forEach(x=>x.oninput=calc);calc();
 // tabs
-const T=[['Request a repair in minutes','Describe the fault and add photos or video. The nearest verified engineer accepts the job, a senior engineer can join live if needed, and you track progress, approve the job report and pay by invoice. If a part is needed, the platform finds it, and for a new machine we give independent advice.'],
-['Join our engineering team','Apply, upload your credentials and get verified. Certified engineers handle repairs, calibration and quality control. Field associates do first-line checks near the hospital under our checklists and remote guidance. Everyone has senior-engineer backup, and work on radiation equipment (X-ray, CT, fluoroscopy, PET, SPECT and others) is limited to qualified engineers.'],
+const T=[['Request a repair in minutes','Describe the fault and add photos or video. We accept your request and assign the nearest engineer who can arrive fastest, a senior engineer can join live if needed, and you track progress, approve the job report and pay by invoice. If a part is needed, the platform finds it, and for a new machine we give independent advice.'],
+['Join our engineering team','Apply, upload your credentials and get verified. Certified engineers handle repairs, calibration and quality control. Field associates do first-line checks near the hospital under our checklists and remote guidance. Everyone has senior-engineer backup.'],
 ['Reach Ethiopian hospitals','List spare parts, answer sourcing requests from hospitals, and enter the Ethiopian market with a local service partner that supports installation, maintenance, import documents and training.']];
 function tab(n){$('#panel').innerHTML='<h3>'+T[n][0]+'</h3><p style="margin-top:10px">'+T[n][1]+'</p>';$$('.tabs button').forEach((x,i)=>x.setAttribute('aria-selected',i==n))}
 $$('.tabs button').forEach(x=>x.onclick=()=>tab(+x.dataset.t));tab(0);
